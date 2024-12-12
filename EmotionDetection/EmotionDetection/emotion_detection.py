@@ -1,8 +1,18 @@
 import json
 import requests
-from requests.exceptions import RequestException
 
 def emotion_detector(text_to_analyze):
+    # 检查空白输入
+    if not text_to_analyze or text_to_analyze.isspace():
+        return {
+            "anger": None,
+            "disgust": None,
+            "fear": None,
+            "joy": None,
+            "sadness": None,
+            "dominant_emotion": None
+        }
+
     url = 'https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict'
     headers = {"grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"}
     input_json = { "raw_document": { "text": text_to_analyze } }
@@ -32,11 +42,12 @@ def emotion_detector(text_to_analyze):
         
         return result
         
-    except requests.exceptions.Timeout:
-        return "错误：连接超时。请检查网络连接并重试。"
     except requests.exceptions.RequestException as e:
-        return f"错误：无法连接到服务。{str(e)}"
-    except json.JSONDecodeError:
-        return "错误：无法解析服务器响应。"
-    except Exception as e:
-        return f"错误：处理过程中出现问题。{str(e)}"
+        return {
+            "anger": None,
+            "disgust": None,
+            "fear": None,
+            "joy": None,
+            "sadness": None,
+            "dominant_emotion": None
+        }

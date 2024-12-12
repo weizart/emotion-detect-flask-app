@@ -13,6 +13,17 @@ def emotion_detector_route():
     result = emotion_detector(text_to_analyze)
     
     if isinstance(result, dict):
+        if result["dominant_emotion"] is None:
+            return jsonify({
+                "anger": None,
+                "disgust": None,
+                "fear": None,
+                "joy": None,
+                "sadness": None,
+                "dominant_emotion": None,
+                "response_text": "无效文本！请再试一次！"
+            }), 400
+        
         # 构建响应文本
         response_text = (
             f"对于给定的语句，系统响应为 'anger': {result['anger']}, "
@@ -30,7 +41,15 @@ def emotion_detector_route():
             "response_text": response_text
         })
     else:
-        return jsonify({"error": str(result)}), 400
+        return jsonify({
+            "anger": None,
+            "disgust": None,
+            "fear": None,
+            "joy": None,
+            "sadness": None,
+            "dominant_emotion": None,
+            "response_text": "无效文本！请再试一次！"
+        }), 400
 
 if __name__ == "__main__":
     app.run(host="localhost", port=5000) 
