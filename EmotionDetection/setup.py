@@ -10,5 +10,5 @@ setup(
     author="weizart",
     description="A package for detecting emotions in text using Watson NLP",
     keywords="emotion detection, nlp, watson",
-    python_requires='>=3.11',
+    python_requires='>=3.6',
 ) 
