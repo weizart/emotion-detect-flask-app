@@ -18,24 +18,24 @@ def render_index_page():
 def emotion_detector_route():
     """
     处理情感检测请求的路由函数
-    
+
     Returns:
         tuple: 包含JSON响应和HTTP状态码
     """
     text_to_analyze = request.args.get('textToAnalyze', '')
-    
+
     # 检查空白输入
     if not text_to_analyze or text_to_analyze.isspace():
         return create_error_response()
-    
+
     result = emotion_detector(text_to_analyze)
-    
+
     if not isinstance(result, dict) or result.get("dominant_emotion") is None:
         return create_error_response()
-    
+
     # 构建响应文本
     response_text = create_response_text(result)
-    
+
     return jsonify({
         "anger": result['anger'],
         "disgust": result['disgust'],
@@ -49,7 +49,7 @@ def emotion_detector_route():
 def create_error_response():
     """
     创建错误响应
-    
+
     Returns:
         tuple: 包含错误信息的JSON响应和400状态码
     """
@@ -66,10 +66,10 @@ def create_error_response():
 def create_response_text(result):
     """
     根据情感分析结果创建响应文本
-    
+
     Args:
         result (dict): 情感分析结果
-        
+
     Returns:
         str: 格式化的响应文本
     """
@@ -81,4 +81,4 @@ def create_response_text(result):
     )
 
 if __name__ == "__main__":
-    app.run(host="localhost", port=5000) 
+    app.run(host="localhost", port=5000)
